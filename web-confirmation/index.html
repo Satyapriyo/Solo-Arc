@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solo Leveling App - Email Confirmation</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233B82F6' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .container {
+            text-align: center;
+            padding: 3rem 2rem;
+            max-width: 500px;
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #3B82F6, #1E40AF, #8B5CF6);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 3rem;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+            position: relative;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #3B82F6, #8B5CF6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .status {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            border-radius: 16px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .success {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.3);
+            color: #22C55E;
+        }
+
+        .error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #EF4444;
+        }
+
+        .loading {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+            color: #3B82F6;
+        }
+
+        .actions {
+            display: none;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #3B82F6, #1E40AF);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #6B7280, #4B5563);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 10px 25px rgba(107, 114, 128, 0.4);
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50%;
+            border-top-color: #3B82F6;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 1rem;
+                padding: 2rem 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">⚔️</div>
+        <h1>Solo Leveling</h1>
+        <p class="subtitle">Hunter System Email Confirmation</p>
+        
+        <div id="status" class="status loading">
+            <div class="spinner"></div>
+            <p>Processing your email confirmation...</p>
+        </div>
+
+        <div id="actions" class="actions">
+            <a href="#" id="openApp" class="btn">Open Solo Leveling App</a>
+            <a href="https://play.google.com/store" id="downloadApp" class="btn btn-secondary">Get the App</a>
+        </div>
+        
+        <div class="footer">
+            <p>Join the ranks of elite hunters and track your progression</p>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const APP_SCHEME = 'sololevelingapp://';
+        const CONFIRM_PATH = 'auth/confirm';
+        
+        // Get URL parameters from both query string and hash
+        const urlParams = new URLSearchParams(window.location.search);
+        const fragment = window.location.hash.substring(1);
+        const hashParams = new URLSearchParams(fragment);
+        
+        // Extract tokens and error information
+        const accessToken = hashParams.get('access_token') || urlParams.get('access_token');
+        const tokenHash = hashParams.get('token_hash') || urlParams.get('token_hash');
+        const refreshToken = hashParams.get('refresh_token') || urlParams.get('refresh_token');
+        const error = hashParams.get('error') || urlParams.get('error');
+        const errorDescription = hashParams.get('error_description') || urlParams.get('error_description');
+        const type = hashParams.get('type') || urlParams.get('type') || 'signup';
+        
+        // DOM elements
+        const statusDiv = document.getElementById('status');
+        const actionsDiv = document.getElementById('actions');
+        const openAppBtn = document.getElementById('openApp');
+        const downloadAppBtn = document.getElementById('downloadApp');
+        
+        // Utility functions
+        function updateStatus(message, type = 'loading', showSpinner = false) {
+            statusDiv.className = `status ${type}`;
+            statusDiv.innerHTML = `
+                ${showSpinner ? '<div class="spinner"></div>' : ''}
+                <p>${message}</p>
+            `;
+        }
+
+        function showActions() {
+            actionsDiv.style.display = 'flex';
+        }
+
+        function buildDeepLink() {
+            const params = new URLSearchParams();
+            
+            if (accessToken) params.set('access_token', accessToken);
+            if (tokenHash) params.set('token_hash', tokenHash);
+            if (refreshToken) params.set('refresh_token', refreshToken);
+            if (type) params.set('type', type);
+            
+            const queryString = params.toString();
+            return `${APP_SCHEME}${CONFIRM_PATH}${queryString ? '?' + queryString : ''}`;
+        }
+
+        function openApp() {
+            const deepLink = buildDeepLink();
+            console.log('Opening app with deep link:', deepLink);
+            
+            // Try to open the app
+            window.location.href = deepLink;
+            
+            // Show fallback after delay
+            setTimeout(() => {
+                updateStatus('App should be opening... If not, please open the Solo Leveling app manually.', 'success');
+                showActions();
+            }, 2000);
+        }
+
+        // Handle different scenarios
+        function handleConfirmation() {
+            if (error) {
+                // Handle errors
+                let errorMsg = 'An error occurred during confirmation.';
+                
+                if (error === 'access_denied') {
+                    if (errorDescription && errorDescription.includes('expired')) {
+                        errorMsg = 'This confirmation link has expired. Please request a new confirmation email from the app.';
+                    } else {
+                        errorMsg = 'Access denied. This confirmation link may be invalid.';
+                    }
+                } else if (error === 'invalid_request') {
+                    errorMsg = 'Invalid confirmation link. Please request a new one from the app.';
+                } else {
+                    errorMsg = `Error: ${errorDescription || error}`;
+                }
+                
+                updateStatus(errorMsg, 'error');
+                showActions();
+                
+            } else if (accessToken || tokenHash) {
+                // Success case
+                updateStatus('✅ Email confirmed successfully! Opening the Solo Leveling app...', 'success');
+                
+                // Auto-open app after short delay
+                setTimeout(() => {
+                    openApp();
+                }, 1500);
+                
+            } else {
+                // No tokens found
+                updateStatus('No confirmation data found. Please use the link from your email.', 'error');
+                showActions();
+            }
+        }
+
+        // Set up button handlers
+        openAppBtn.onclick = (e) => {
+            e.preventDefault();
+            openApp();
+        };
+
+        downloadAppBtn.onclick = (e) => {
+            e.preventDefault();
+            // You can update these links when your app is published
+            if (/Android/i.test(navigator.userAgent)) {
+                window.open('https://play.google.com/store/apps', '_blank');
+            } else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                window.open('https://apps.apple.com/', '_blank');
+            } else {
+                alert('Download the Solo Leveling app from your device\'s app store');
+            }
+        };
+
+        // Auto-detect mobile and handle confirmation
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        
+        // Start the confirmation process
+        setTimeout(() => {
+            handleConfirmation();
+        }, 1000);
+
+        // Auto-open on mobile devices with valid tokens
+        if (isMobile && (accessToken || tokenHash) && !error) {
+            setTimeout(() => {
+                openApp();
+            }, 2500);
+        }
+    </script>
+</body>
+</html>

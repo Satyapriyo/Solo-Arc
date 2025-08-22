@@ -1,0 +1,13 @@
+{
+  "name": "solo-leveling-email-confirmation",
+  "version": "1.0.0",
+  "description": "Email confirmation page for Solo Leveling mobile app",
+  "main": "index.html",
+  "scripts": {
+    "deploy": "vercel --prod",
+    "dev": "vercel dev"
+  },
+  "keywords": ["solo-leveling", "email-confirmation", "vercel"],
+  "author": "Solo Leveling App Team",
+  "license": "MIT"
+}

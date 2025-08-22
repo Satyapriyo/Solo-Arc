@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solo Leveling App - Email Confirmation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;    
+            justify-content: center;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 400px;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #3B82F6, #1E40AF);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 2rem;
+        }
+        h1 {
+            margin-bottom: 1rem;
+            color: #3B82F6;
+        }
+        p {
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+        .btn {
+            background: linear-gradient(45deg, #3B82F6, #1E40AF);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0.5rem;
+            transition: transform 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .status {
+            margin-top: 2rem;
+            padding: 1rem;
+            border-radius: 10px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        .success {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.3);
+            color: #22C55E;
+        }
+        .error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #EF4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">⚔️</div>
+        <h1>Solo Leveling App</h1>
+        <p>Confirming your email...</p>
+        
+        <div id="status" class="status">
+            <p>Processing your email confirmation...</p>
+        </div>
+
+        <div id="actions" style="display: none;">
+            <a href="#" id="openApp" class="btn">Open App</a>
+            <a href="#" id="downloadApp" class="btn" style="background: linear-gradient(45deg, #6B7280, #4B5563);">Get the App</a>
+        </div>
+    </div>
+
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const fragment = window.location.hash.substring(1);
+        const hashParams = new URLSearchParams(fragment);
+        
+        const tokenHash = hashParams.get('access_token') || hashParams.get('token_hash') || urlParams.get('token_hash');
+        const error = hashParams.get('error') || urlParams.get('error');
+        const errorDescription = hashParams.get('error_description') || urlParams.get('error_description');
+
+        const statusDiv = document.getElementById('status');
+        const actionsDiv = document.getElementById('actions');
+        
+        function updateStatus(message, type = 'status') {
+            statusDiv.className = `status ${type}`;
+            statusDiv.innerHTML = `<p>${message}</p>`;
+        }
+
+        function showActions() {
+            actionsDiv.style.display = 'block';
+        }
+
+        // Try to open the app
+        function openApp() {
+            const deepLink = tokenHash 
+                ? `sololevelingapp://auth/confirm?token_hash=${tokenHash}`
+                : 'sololevelingapp://';
+                
+            window.location.href = deepLink;
+            
+            // Fallback after 2 seconds
+            setTimeout(() => {
+                updateStatus('Unable to open app automatically. Please open the Solo Leveling app manually.', 'error');
+                showActions();
+            }, 2000);
+        }
+
+        // Set up action buttons
+        document.getElementById('openApp').onclick = (e) => {
+            e.preventDefault();
+            openApp();
+        };
+
+        document.getElementById('downloadApp').onclick = (e) => {
+            e.preventDefault();
+            alert('App download links would go here');
+        };
+
+        // Handle the confirmation
+        if (error) {
+            if (error === 'access_denied' && errorDescription?.includes('expired')) {
+                updateStatus('This confirmation link has expired. Please request a new one from the app.', 'error');
+            } else {
+                updateStatus(`Error: ${errorDescription || error}`, 'error');
+            }
+            showActions();
+        } else if (tokenHash) {
+            updateStatus('Email confirmed successfully! Opening app...', 'success');
+            // Try to open the app automatically
+            setTimeout(openApp, 1000);
+        } else {
+            updateStatus('No confirmation token found. Please use the link from your email.', 'error');
+            showActions();
+        }
+
+        // Auto-detect mobile and try to open app
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        if (isMobile && tokenHash) {
+            setTimeout(openApp, 500);
+        }
+    </script>
+</body>
+</html>
