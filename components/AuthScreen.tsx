@@ -113,8 +113,8 @@ export function AuthScreen({ onAuthSuccess }: AuthScreenProps) {
                 <View style={styles.heroIcon}>
                     <Sword size={64} color="#FFFFFF" />
                 </View>
-                <Text style={styles.heroTitle}>Solo Leveling</Text>
-                <Text style={styles.heroSubtitle}>Real Life RPG Adventure</Text>
+                <Text style={styles.heroTitle}>Solo Arc</Text>
+                <Text style={styles.heroSubtitle}>Level-up in real life</Text>
                 <Text style={styles.heroDescription}>
                     Transform your daily life into an epic quest. Level up by completing tasks,
                     building habits, and becoming the hero of your own story.
