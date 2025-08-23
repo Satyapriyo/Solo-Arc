@@ -3,15 +3,18 @@
 A gamified fitness and productivity app inspired by Solo Leveling, built with React Native and Expo. Transform your daily tasks and workouts into an RPG-style progression system where you level up, gain XP, and build your hunter profile!
 
 ## ✨ Features
-<p style="display: flex; justify-content: space-between; margin: 20px 0;" align="center" >
+<p style="display: flex; justify-content: space-between; margin: 20px 20px;" align="center" >
   <img src="https://res.cloudinary.com/duyocx2j0/image/upload/v1755926611/WhatsApp_Image_2025-08-23_at_10.51.42_5495f1ac_tcyruk.jpg" width="200" />
+  <img src="https://res.cloudinary.com/duyocx2j0/image/upload/v1755927755/WhatsApp_Image_2025-08-23_at_11.11.15_bb0619f3_t1j4mw.jpg" width="200" />
   <img src="https://res.cloudinary.com/duyocx2j0/image/upload/v1755926610/WhatsApp_Image_2025-08-23_at_10.51.41_1e891fb3_bnx71t.jpg" width="200"/>
-  <img src="https://res.cloudinary.com/duyocx2j0/image/upload/v1755926611/WhatsApp_Image_2025-08-23_at_10.51.41_edb51dd1_inypgx.jpg" width="200" />
+  
 </p>
 
-<p style="display: flex; justify-content: space-around; margin: 20px 0;" align="center">
+<p style="display: flex; justify-content: space-around; margin: 20px 20px;" align="center">
+  <img src="https://res.cloudinary.com/duyocx2j0/image/upload/v1755926611/WhatsApp_Image_2025-08-23_at_10.51.41_edb51dd1_inypgx.jpg" width="200" />
   <img src="https://res.cloudinary.com/duyocx2j0/image/upload/v1755926611/WhatsApp_Image_2025-08-23_at_10.51.41_cabab093_p5w4pt.jpg" width="200" />
   <img src="https://res.cloudinary.com/duyocx2j0/image/upload/v1755926610/WhatsApp_Image_2025-08-23_at_10.51.40_7265e876_rrhmhj.jpg" width="200" />
+  
 </p>
 
 ### 🎮 Gamification System
